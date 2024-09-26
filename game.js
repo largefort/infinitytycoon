@@ -1,91 +1,44 @@
-let infinity = 100; // Start the game with 100 Infinity Dollars
+let infinityDollars = 100; // Starting amount of Infinity Dollars for new players
+let ips = 0; // Infinity per Second
+let buildings = [];
 
-// Buildings data
-let buildings = [
-    { id: 1, name: 'Infinity Mine', rate: 1, level: 0, baseCost: 100, cost: 100, purchased: false },
-    { id: 2, name: 'Infinity Factory', rate: 5, level: 0, baseCost: 500, cost: 500, purchased: false },
-    { id: 3, name: 'Infinity Bank', rate: 25, level: 0, baseCost: 2500, cost: 2500, purchased: false },
-    { id: 4, name: 'Infinity Vault', rate: 75, level: 0, baseCost: 7500, cost: 7500, purchased: false },
-    { id: 5, name: 'Infinity Tower', rate: 200, level: 0, baseCost: 20000, cost: 20000, purchased: false },
-    { id: 6, name: 'Infinity Portal', rate: 500, level: 0, baseCost: 50000, cost: 50000, purchased: false },
-    { id: 7, name: 'Infinity Reactor', rate: 1200, level: 0, baseCost: 120000, cost: 120000, purchased: false },
-    { id: 8, name: 'Infinity Laboratory', rate: 5000, level: 0, baseCost: 500000, cost: 500000, purchased: false },
-    { id: 9, name: 'Infinity Stargate', rate: 15000, level: 0, baseCost: 1500000, cost: 1500000, purchased: false },
-    { id: 10, name: 'Infinity Dimension', rate: 40000, level: 0, baseCost: 4000000, cost: 4000000, purchased: false },
-    { id: 11, name: 'Infinity Universe', rate: 100000, level: 0, baseCost: 10000000, cost: 10000000, purchased: false },
-    { id: 12, name: 'Infinity Multiverse', rate: 500000, level: 0, baseCost: 50000000, cost: 50000000, purchased: false }
+// Building data structure
+const buildingData = [
+    { id: 1, name: "Infinity Mine", rate: 1.0, cost: 100, count: 0 },
+    { id: 2, name: "Infinity Factory", rate: 1.5, cost: 500, count: 0 },
+    { id: 3, name: "Infinity Bank", rate: 2.5, cost: 2000, count: 0 },
+    { id: 4, name: "Infinity Vault", rate: 4.0, cost: 8000, count: 0 },
+    { id: 5, name: "Infinity Tower", rate: 6.0, cost: 32000, count: 0 },
+    { id: 6, name: "Infinity Portal", rate: 10.0, cost: 128000, count: 0 },
+    { id: 7, name: "Infinity Reactor", rate: 15.0, cost: 512000, count: 0 },
+    { id: 8, name: "Infinity Laboratory", rate: 20.0, cost: 2048000, count: 0 },
+    { id: 9, name: "Infinity Stargate", rate: 30.0, cost: 8192000, count: 0 },
+    { id: 10, name: "Infinity Dimension", rate: 50.0, cost: 32768000, count: 0 },
+    { id: 11, name: "Infinity Universe", rate: 75.0, cost: 131072000, count: 0 },
+    { id: 12, name: "Infinity Multiverse", rate: 100.0, cost: 524288000, count: 0 }
 ];
 
-// Load game progress from local storage
+// Load progress from local storage
 function loadProgress() {
-    const savedData = localStorage.getItem('infinityTycoon');
+    const savedData = JSON.parse(localStorage.getItem('infinityTycoon'));
     if (savedData) {
-        const data = JSON.parse(savedData);
-        infinity = data.infinity;
-        buildings = data.buildings;
+        infinityDollars = savedData.infinityDollars;
+        ips = savedData.ips;
+        buildings = savedData.buildings;
+    } else {
+        buildings = buildingData.map(building => ({ ...building, count: 0 }));
     }
+    updateUI();
 }
 
-// Save game progress to local storage
+// Save progress to local storage
 function saveProgress() {
-    const data = {
-        infinity: infinity,
-        buildings: buildings
+    const saveData = {
+        infinityDollars,
+        ips,
+        buildings
     };
-    localStorage.setItem('infinityTycoon', JSON.stringify(data));
-}
-
-// Update the Infinity count and IPS every second
-function updateInfinity() {
-    let totalInfinity = 0;
-    let totalIPS = 0; // Initialize total IPS
-
-    buildings.forEach(building => {
-        if (building.purchased) {
-            totalInfinity += building.rate * building.level;
-            totalIPS += building.rate; // Sum the rates for total IPS
-        }
-    });
-
-    infinity += totalInfinity;
-    document.getElementById('infinity').innerText = infinity.toFixed(0);
-    document.getElementById('ips').innerText = totalIPS.toFixed(0); // Update IPS counter
-    saveProgress(); // Save progress whenever Infinity is updated
-}
-
-// Purchase a building
-function purchaseBuilding(id) {
-    let building = buildings.find(b => b.id === id);
-    if (infinity >= building.cost && !building.purchased) {
-        infinity -= building.cost;
-        building.purchased = true;
-        building.level = 1;
-
-        // Enable the upgrade button
-        document.querySelector(`#building-${id} button:nth-child(4)`).disabled = false;
-        document.querySelector(`#building-${id} button:nth-child(3)`).disabled = true; // Disable purchase button
-
-        updateUI();
-        saveProgress(); // Save progress after purchasing
-    }
-}
-
-// Upgrade a building
-function upgradeBuilding(id) {
-    let building = buildings.find(b => b.id === id);
-    if (infinity >= building.cost) {
-        infinity -= building.cost;
-        building.level++;
-        
-        // Dynamic rate increase
-        building.rate += building.baseCost * 0.1 * building.level;
-        
-        // Cost increases by 1.15x after each upgrade
-        building.cost = Math.round(building.cost * 1.15);
-
-        updateUI();
-        saveProgress(); // Save progress after upgrading
-    }
+    localStorage.setItem('infinityTycoon', JSON.stringify(saveData));
 }
 
 // Update the UI to reflect current rates and costs
@@ -94,14 +47,46 @@ function updateUI() {
         const buildingElement = document.getElementById(`building-${building.id}`);
 
         if (building.purchased) {
-            buildingElement.querySelector('.rate').innerText = building.rate.toFixed(0);
-            buildingElement.querySelector('.cost').innerText = building.cost;
-        } else {
-            buildingElement.querySelector('.cost').innerText = building.cost;
+            buildingElement.querySelector('.rate').innerText = building.rate.toFixed(1);
         }
+        buildingElement.querySelector('.cost').innerText = building.cost.toFixed(1);
     });
 
-    document.getElementById('infinity').innerText = infinity.toFixed(0);
+    document.getElementById('infinity').innerText = infinityDollars.toFixed(1);
+    document.getElementById('ips').innerText = ips.toFixed(1);
+}
+
+// Purchase building
+function purchaseBuilding(index) {
+    const building = buildings[index - 1];
+    if (infinityDollars >= building.cost) {
+        infinityDollars -= building.cost;
+        building.count += 1;
+        ips += building.rate; // Increase IPS based on the building rate
+        building.cost = Math.ceil(building.cost * 1.15); // Increase cost by 15%
+        saveProgress();
+        updateUI();
+    }
+}
+
+// Upgrade building
+function upgradeBuilding(index) {
+    const building = buildings[index - 1];
+    if (infinityDollars >= building.cost) {
+        infinityDollars -= building.cost;
+        building.rate += 0.1; // Increase the building's rate by 0.1
+        ips += building.rate; // Update IPS
+        building.cost = Math.ceil(building.cost * 1.15); // Increase cost by 15%
+        saveProgress();
+        updateUI();
+    }
+}
+
+// Income generation every second
+function updateInfinity() {
+    infinityDollars += ips; // Add IPS to Infinity Dollars
+    saveProgress();
+    updateUI();
 }
 
 // Run the game loop to update the infinity count every second
