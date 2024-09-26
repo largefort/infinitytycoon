@@ -1,5 +1,5 @@
-let infinityDollars = 100; // Starting amount of Infinity Dollars for new players
-let ips = 0; // Infinity per Second
+let infinityDollars = 100; // Ensure this is initialized with a valid number
+let ips = 0; // Ensure this is initialized as a number
 let buildings = [];
 
 // Building data structure
@@ -22,9 +22,9 @@ const buildingData = [
 function loadProgress() {
     const savedData = JSON.parse(localStorage.getItem('infinityTycoon'));
     if (savedData) {
-        infinityDollars = savedData.infinityDollars;
-        ips = savedData.ips;
-        buildings = savedData.buildings;
+        infinityDollars = savedData.infinityDollars || 100; // Set default if null/undefined
+        ips = savedData.ips || 0; // Set default if null/undefined
+        buildings = savedData.buildings || buildingData.map(building => ({ ...building, count: 0 }));
     } else {
         buildings = buildingData.map(building => ({ ...building, count: 0 }));
     }
@@ -43,17 +43,22 @@ function saveProgress() {
 
 // Update the UI to reflect current rates and costs
 function updateUI() {
+    // Ensure the Infinity Dollars and IPS are valid numbers before updating UI
+    const infinityElement = document.getElementById('infinity');
+    const ipsElement = document.getElementById('ips');
+
+    if (infinityElement && ipsElement) {
+        infinityElement.innerText = (infinityDollars || 0).toFixed(1);
+        ipsElement.innerText = (ips || 0).toFixed(1);
+    }
+
     buildings.forEach(building => {
         const buildingElement = document.getElementById(`building-${building.id}`);
-
-        if (building.purchased) {
-            buildingElement.querySelector('.rate').innerText = building.rate.toFixed(1);
+        if (buildingElement) {
+            buildingElement.querySelector('.rate').innerText = (building.rate * building.count).toFixed(1);
+            buildingElement.querySelector('.cost').innerText = building.cost.toFixed(1);
         }
-        buildingElement.querySelector('.cost').innerText = building.cost.toFixed(1);
     });
-
-    document.getElementById('infinity').innerText = infinityDollars.toFixed(1);
-    document.getElementById('ips').innerText = ips.toFixed(1);
 }
 
 // Purchase building
