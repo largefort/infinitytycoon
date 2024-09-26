@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Tycoon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game">
+        <h1>Infinity Tycoon</h1>
+        <div>
+            <h2>Infinity Dollars: <span id="infinity">100</span></h2>
+            <h3>Infinity per Second: <span id="ips">0</span></h3> <!-- Added IPS counter -->
+        </div>
+        <div id="buildings">
+            <div id="building-1" class="building">
+                <h3>Infinity Mine</h3>
+                <p>Rate: <span class="rate">1</span> IPS</p>
+                <p>Cost: <span class="cost">100</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(1)">Purchase</button>
+                <button onclick="upgradeBuilding(1)" disabled>Upgrade</button>
+            </div>
+            <div id="building-2" class="building">
+                <h3>Infinity Factory</h3>
+                <p>Rate: <span class="rate">5</span> IPS</p>
+                <p>Cost: <span class="cost">500</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(2)">Purchase</button>
+                <button onclick="upgradeBuilding(2)" disabled>Upgrade</button>
+            </div>
+            <div id="building-3" class="building">
+                <h3>Infinity Bank</h3>
+                <p>Rate: <span class="rate">25</span> IPS</p>
+                <p>Cost: <span class="cost">2500</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(3)">Purchase</button>
+                <button onclick="upgradeBuilding(3)" disabled>Upgrade</button>
+            </div>
+            <div id="building-4" class="building">
+                <h3>Infinity Vault</h3>
+                <p>Rate: <span class="rate">75</span> IPS</p>
+                <p>Cost: <span class="cost">7500</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(4)">Purchase</button>
+                <button onclick="upgradeBuilding(4)" disabled>Upgrade</button>
+            </div>
+            <div id="building-5" class="building">
+                <h3>Infinity Tower</h3>
+                <p>Rate: <span class="rate">200</span> IPS</p>
+                <p>Cost: <span class="cost">20000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(5)">Purchase</button>
+                <button onclick="upgradeBuilding(5)" disabled>Upgrade</button>
+            </div>
+            <div id="building-6" class="building">
+                <h3>Infinity Portal</h3>
+                <p>Rate: <span class="rate">500</span> IPS</p>
+                <p>Cost: <span class="cost">50000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(6)">Purchase</button>
+                <button onclick="upgradeBuilding(6)" disabled>Upgrade</button>
+            </div>
+            <div id="building-7" class="building">
+                <h3>Infinity Reactor</h3>
+                <p>Rate: <span class="rate">1200</span> IPS</p>
+                <p>Cost: <span class="cost">120000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(7)">Purchase</button>
+                <button onclick="upgradeBuilding(7)" disabled>Upgrade</button>
+            </div>
+            <div id="building-8" class="building">
+                <h3>Infinity Laboratory</h3>
+                <p>Rate: <span class="rate">5000</span> IPS</p>
+                <p>Cost: <span class="cost">500000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(8)">Purchase</button>
+                <button onclick="upgradeBuilding(8)" disabled>Upgrade</button>
+            </div>
+            <div id="building-9" class="building">
+                <h3>Infinity Stargate</h3>
+                <p>Rate: <span class="rate">15000</span> IPS</p>
+                <p>Cost: <span class="cost">1500000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(9)">Purchase</button>
+                <button onclick="upgradeBuilding(9)" disabled>Upgrade</button>
+            </div>
+            <div id="building-10" class="building">
+                <h3>Infinity Dimension</h3>
+                <p>Rate: <span class="rate">40000</span> IPS</p>
+                <p>Cost: <span class="cost">4000000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(10)">Purchase</button>
+                <button onclick="upgradeBuilding(10)" disabled>Upgrade</button>
+            </div>
+            <div id="building-11" class="building">
+                <h3>Infinity Universe</h3>
+                <p>Rate: <span class="rate">100000</span> IPS</p>
+                <p>Cost: <span class="cost">10000000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(11)">Purchase</button>
+                <button onclick="upgradeBuilding(11)" disabled>Upgrade</button>
+            </div>
+            <div id="building-12" class="building">
+                <h3>Infinity Multiverse</h3>
+                <p>Rate: <span class="rate">500000</span> IPS</p>
+                <p>Cost: <span class="cost">50000000</span> Infinity Dollars</p>
+                <button onclick="purchaseBuilding(12)">Purchase</button>
+                <button onclick="upgradeBuilding(12)" disabled>Upgrade</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
